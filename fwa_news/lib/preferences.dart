@@ -5,7 +5,7 @@ class SharedPreferencesHelper {
   static Future<String> getKeyValue(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    return prefs.getString(key) ?? false;
+    return prefs.getString(key) ?? "";
   }
 
 
