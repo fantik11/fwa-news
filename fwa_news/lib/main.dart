@@ -3,7 +3,7 @@ import 'package:fwa_news/DashboardPage.dart';
 import "SplashPage.dart";
 import "LoginPage.dart";
 import 'DashboardPage.dart';
-
+import 'Routes/Routes.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashPage(),
       routes: {
-        '/login': (context) => LoginPage(),
-        '/dashboard': (context) => DashboardPage(),
+        Routes.LOGIN: (context) => LoginPage(),
+        Routes.DASHBOARD: (context) => DashboardPage(),
       },
     );
   }
