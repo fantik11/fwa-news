@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flash/flash.dart';
+import 'Helpers/FlashHelper.dart';
+import 'preferences.dart';
+import 'Routes/Routes.dart';
 
 class LoginPage extends StatelessWidget {
-
-  void submitter()
-  {
-    
-  } 
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +39,17 @@ class LoginPage extends StatelessWidget {
                   child: Container(
                     width: 270,
                     child: TextField(
+                      minLines: 1,
+                      onSubmitted: (value) async {
+                        if(value.length > 0)
+                        {
+                          await SharedPreferencesHelper.setKeyValue("token", value);
+                          Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
+                        }else
+                        {
+                          FlashHelper.errorBar(context, message: "Length of token should not equal zero");
+                        }
+                      },
                       decoration: new InputDecoration(
                         labelText: "Введите токен",
                         border: new OutlineInputBorder(
