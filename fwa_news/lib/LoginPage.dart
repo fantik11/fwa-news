@@ -7,6 +7,7 @@ import 'Routes/Routes.dart';
 class LoginPage extends StatelessWidget {
 
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -39,7 +40,6 @@ class LoginPage extends StatelessWidget {
                   child: Container(
                     width: 270,
                     child: TextField(
-                      minLines: 1,
                       onSubmitted: (value) async {
                         if(value.length > 0)
                         {
