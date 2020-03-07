@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flash/flash.dart';
 import 'Helpers/FlashHelper.dart';
 import 'preferences.dart';
 import 'Routes/Routes.dart';
@@ -44,7 +43,7 @@ class LoginPage extends StatelessWidget {
                         if(value.length > 0)
                         {
                           await SharedPreferencesHelper.setKeyValue("token", value);
-                          Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
+                          Navigator.of(context).pushReplacementNamed(Routes.FRAME);
                         }else
                         {
                           FlashHelper.errorBar(context, message: "Length of token should not equal zero");
