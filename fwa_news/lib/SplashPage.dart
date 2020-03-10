@@ -23,7 +23,7 @@ class _SplashPage extends State<SplashPage> {
     if (_haveToken == "") {
       Navigator.of(context).pushReplacementNamed(Routes.LOGIN);
     } else {
-      Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
+      Navigator.of(context).pushReplacementNamed(Routes.FRAME);
     }
   }
 

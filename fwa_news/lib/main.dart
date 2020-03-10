@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fwa_news/DashboardPage.dart';
 import "SplashPage.dart";
 import "LoginPage.dart";
+import 'HelpClass/Frame.dart';
 import 'DashboardPage.dart';
 import 'Routes/Routes.dart';
 void main() => runApp(MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.LOGIN: (context) => LoginPage(),
         Routes.DASHBOARD: (context) => DashboardPage(),
+        Routes.FRAME: (context) => Frame(),
       },
     );
   }
