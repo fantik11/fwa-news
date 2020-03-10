@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Helpers/FlashHelper.dart';
-import 'preferences.dart';
-import 'Routes/Routes.dart';
+import 'package:fwa_news/Helpers/FlashHelper.dart';
+import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Routes/Routes.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                         }
                       },
                       decoration: new InputDecoration(
-                        labelText: "Введите токен",
+                        labelText: "Enter your token",
                         border: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(5.0),
                           borderSide: new BorderSide(),

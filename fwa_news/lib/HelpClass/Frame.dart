@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fwa_news/DashboardPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:fwa_news/Widgets/SettingsPage.dart';
+
 
 class Frame extends StatefulWidget {
   Frame({Key key}) : super(key: key);
@@ -20,8 +22,7 @@ class _FrameState extends State<Frame> {
   void pageChanged(index) {
     _selectedIndex = index;
     setState(() {});
-    pageController.animateToPage(_selectedIndex,
-        duration: Duration(milliseconds: 300), curve: Curves.linear);
+    pageController.jumpToPage(index);
   }
 
   @override
@@ -41,6 +42,7 @@ class _FrameState extends State<Frame> {
                   DashboardPage(),
                   DashboardPage(),
                   DashboardPage(),
+                  SettingsPage(),
                 ],
               ),
             ),
@@ -56,9 +58,10 @@ class _FrameState extends State<Frame> {
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         items: <Widget>[
-          Icon(Icons.add, size: 30),
-          Icon(Icons.list, size: 30),
-          Icon(Icons.compare_arrows, size: 30),
+          Icon(Icons.apps, size: 30),
+          Icon(Icons.account_box, size: 30),
+          Icon(Icons.search, size: 30),
+          Icon(Icons.settings, size: 30),
         ],
         onTap: pageChanged,
         index: _selectedIndex,

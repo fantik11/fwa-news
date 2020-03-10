@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fwa_news/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
+import 'package:sprintf/sprintf.dart';
 
 class PostImplementation {
   Future<List<dynamic>> _loadData() async {
@@ -19,20 +20,31 @@ class PostImplementation {
     }
   }
 
+  //Главный билдер
   Future<Widget> postBuilder({int count = 10}) async {
     List<dynamic> data = await _loadData();
-    List<Post> posts = new List<Post>();
+    List<Widget> posts = new List<Widget>();
 
     data.asMap().forEach((i, element) {
       if (i < count) {
-        posts.add(Post.fromJson(element));
+        //posts.add(PostCard.fromJson(element));
+        posts.add(PostCard(
+            id: element['id'],
+            sourceId: element['sourceId'],
+            sourceName: element['sourceName'],
+            author: element['author'] == "" ? "Anonym" : element['author'],
+            title: element['title'],
+            url: element['url'],
+            likes: element['likes'],
+            urlToImage: element['urlToImage'],
+            publishedAt: element['publishedAt']));
       }
     });
 
     return new ListView.builder(
       itemCount: posts.length,
       itemBuilder: (BuildContext ctxt, int index) {
-        return posts[index].build(ctxt);
+        return posts[index];
       },
     );
   }
@@ -47,7 +59,7 @@ class PostMockup extends PostImplementation {
   }
 }
 
-class Post {
+class PostCard extends StatefulWidget {
   final String id,
       sourceId,
       sourceName,
@@ -56,52 +68,70 @@ class Post {
       url,
       urlToImage,
       publishedAt;
+  int likes;
 
-  Post.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        sourceId = json['sourceId'],
-        sourceName = json['sourceName'],
-        author = json['author'],
-        title = json['title'],
-        url = json['url'],
-        urlToImage = json['urlToImage'],
-        publishedAt = json['publishedAt'];
-  /*
-  Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(width: 1.0, color: Colors.black45))),
-      child: Row(
-        children: <Widget>[
-          Container(
-            height: 80,
-            width: 100,
-            child: FadeInImage.assetNetwork(
-              fit: BoxFit.cover,
-              placeholder: "assets/images/image_placeholder.png",
-              image: urlToImage,
-            ),
-          ),
-          Container(
-            width: 300,
-            padding: EdgeInsets.only(left: 8),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.body2,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  void changeLike(int newValue) {
+    likes = newValue;
   }
-  */
 
+  PostCard(
+      {Key key,
+      this.id,
+      this.sourceId,
+      this.sourceName,
+      this.author,
+      this.title,
+      this.url,
+      this.likes,
+      this.urlToImage,
+      this.publishedAt})
+      : super(key: key);
+
+  @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool liked = false;
+
+  @override
+  void initState() {
+    isLiked().then((value){
+      setState(() {
+        liked = value;
+      });
+    });
+  }
+
+  Future<Null> like() async {
+    Map<String, String> headers = {
+      "token": await SharedPreferencesHelper.getKeyValue("token"),
+      "Content-Type": "application/json",
+    };
+    await http.post(sprintf(Url.LIKE_POST, [widget.id]), headers: headers);
+    return;
+  }
+
+  Future<Null> unlike() async {
+    Map<String, String> headers = {
+      "token": await SharedPreferencesHelper.getKeyValue("token"),
+      "Content-Type": "application/json",
+    };
+    await http.post(sprintf(Url.UNLIKE_POST, [widget.id]), headers: headers);
+    return;
+  }
+
+  Future<bool> isLiked() async
+  {
+    Map<String, String> headers = {
+      "token": await SharedPreferencesHelper.getKeyValue("token"),
+      "Content-Type": "application/json",
+    };
+    http.Response httpResponse = await http.get(sprintf(Url.LIKE_GET, [widget.id]), headers: headers);
+    return jsonDecode(httpResponse.body)["like"];
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
@@ -111,16 +141,54 @@ class Post {
           child: FadeInImage.assetNetwork(
             fit: BoxFit.cover,
             placeholder: "assets/images/image_placeholder.png",
-            image: urlToImage,
+            image: widget.urlToImage,
           ),
         ),
         title: Text(
-          title,
+          widget.title,
           overflow: TextOverflow.ellipsis,
           maxLines: 3,
           style: Theme.of(context).textTheme.body2,
         ),
-        subtitle: Text(""),
+        subtitle: Text(
+          "Posted by: " + widget.author,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        trailing: Column(
+          children: <Widget>[
+            Container(
+              width: 25,
+              height: 25,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.keyboard_arrow_up,
+                    color: liked ? Colors.green : Colors.grey),
+                onPressed: () {
+                  setState(() {
+                    //Добавить +1 лайк и послать запрос
+                    if (liked == false) {
+                      widget.changeLike(widget.likes + 1);
+                      liked = true;
+                      like();
+                    } else {
+                      widget.changeLike(widget.likes - 1);
+                      liked = false;
+                      unlike();
+                    }
+                  });
+                },
+              ),
+            ),
+            Text(
+              widget.likes.toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .button
+                  .copyWith(color: liked ? Colors.green : Colors.grey),
+            ),
+          ],
+        ),
         isThreeLine: true,
       ),
     );
