@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fwa_news/preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'HelpClass/Post.dart';
+import 'package:fwa_news/HelpClass/NewsImplementation.dart';
 
 class DashboardPage extends StatefulWidget {
   DashboardPage({Key key}) : super(key: key);
@@ -10,7 +10,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  PostImplementation post = new PostImplementation();
+  NewsImplementation post = new NewsImplementation();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -37,6 +37,8 @@ class _DashboardPageState extends State<DashboardPage> {
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,6 @@ class _DashboardPageState extends State<DashboardPage> {
       body: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
-          //Вызов кэширующей функции
           child: FutureBuilder(
             future: post.postBuilder(count: _postCount),
             builder: (BuildContext context, AsyncSnapshot snapshot) {

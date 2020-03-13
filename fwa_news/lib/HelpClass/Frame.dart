@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fwa_news/DashboardPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fwa_news/Widgets/SettingsPage.dart';
-
+import 'package:fwa_news/Widgets/MyPostPage.dart';
 
 class Frame extends StatefulWidget {
   Frame({Key key}) : super(key: key);
@@ -40,7 +40,7 @@ class _FrameState extends State<Frame> {
                 },
                 children: <Widget>[
                   DashboardPage(),
-                  DashboardPage(),
+                  MyPostPage(),
                   DashboardPage(),
                   SettingsPage(),
                 ],

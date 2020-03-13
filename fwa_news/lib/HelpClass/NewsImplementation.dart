@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:fwa_news/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:fwa_news/Widgets/EditPostPage.dart';
+import 'package:fwa_news/HelpClass/PostInterface.dart';
 
-class PostImplementation {
+class NewsImplementation implements PostLoadInterface {
   Future<List<dynamic>> _loadData() async {
     Map<String, String> headers = {
       "token": await SharedPreferencesHelper.getKeyValue("token"),
@@ -26,9 +28,9 @@ class PostImplementation {
     List<Widget> posts = new List<Widget>();
 
     data.asMap().forEach((i, element) {
-      if (i < count) {
+      if (i  < count) {
         //posts.add(PostCard.fromJson(element));
-        posts.add(PostCard(
+        posts.add(NewsCard(
             id: element['id'],
             sourceId: element['sourceId'],
             sourceName: element['sourceName'],
@@ -50,7 +52,7 @@ class PostImplementation {
   }
 }
 
-class PostMockup extends PostImplementation {
+class PostMockup extends NewsImplementation {
   Future<List<dynamic>> _loadData() async {
     await Future.delayed(Duration(seconds: 1));
     String jsonned =
@@ -59,22 +61,15 @@ class PostMockup extends PostImplementation {
   }
 }
 
-class PostCard extends StatefulWidget {
-  final String id,
-      sourceId,
-      sourceName,
-      author,
-      title,
-      url,
-      urlToImage,
-      publishedAt;
+class NewsCard extends StatefulWidget {
+  String id, sourceId, sourceName, author, title, url, urlToImage, publishedAt;
   int likes;
 
   void changeLike(int newValue) {
     likes = newValue;
   }
 
-  PostCard(
+  NewsCard(
       {Key key,
       this.id,
       this.sourceId,
@@ -88,15 +83,15 @@ class PostCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PostCardState createState() => _PostCardState();
+  _NewsCardState createState() => _NewsCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _NewsCardState extends State<NewsCard> {
   bool liked = false;
 
   @override
   void initState() {
-    isLiked().then((value){
+    isLiked().then((value) {
       setState(() {
         liked = value;
       });
@@ -121,40 +116,27 @@ class _PostCardState extends State<PostCard> {
     return;
   }
 
-  Future<bool> isLiked() async
-  {
+  Future<bool> isLiked() async {
     Map<String, String> headers = {
       "token": await SharedPreferencesHelper.getKeyValue("token"),
       "Content-Type": "application/json",
     };
-    http.Response httpResponse = await http.get(sprintf(Url.LIKE_GET, [widget.id]), headers: headers);
+    http.Response httpResponse =
+        await http.get(sprintf(Url.LIKE_GET, [widget.id]), headers: headers);
     return jsonDecode(httpResponse.body)["like"];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Container(
-          height: 80,
-          width: 100,
-          child: FadeInImage.assetNetwork(
-            fit: BoxFit.cover,
-            placeholder: "assets/images/image_placeholder.png",
-            image: widget.urlToImage,
-          ),
-        ),
-        title: Text(
-          widget.title,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 3,
-          style: Theme.of(context).textTheme.body2,
-        ),
-        subtitle: Text(
-          "Posted by: " + widget.author,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
+    return PostCardWrapper(
+        id: widget.id,
+        sourceId: widget.sourceId,
+        sourceName: widget.sourceName,
+        author: widget.author == "" ? "Anonym" : widget.author,
+        title: widget.title,
+        url: widget.url,
+        urlToImage: widget.urlToImage,
+        publishedAt: widget.publishedAt,
         trailing: Column(
           children: <Widget>[
             Container(
@@ -166,6 +148,10 @@ class _PostCardState extends State<PostCard> {
                     color: liked ? Colors.green : Colors.grey),
                 onPressed: () {
                   setState(() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => EditPostPage()));
                     //Добавить +1 лайк и послать запрос
                     if (liked == false) {
                       widget.changeLike(widget.likes + 1);
@@ -188,9 +174,6 @@ class _PostCardState extends State<PostCard> {
                   .copyWith(color: liked ? Colors.green : Colors.grey),
             ),
           ],
-        ),
-        isThreeLine: true,
-      ),
-    );
+        ));
   }
 }
