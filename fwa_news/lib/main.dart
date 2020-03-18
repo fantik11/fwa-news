@@ -5,6 +5,8 @@ import "LoginPage.dart";
 import 'HelpClass/Frame.dart';
 import 'DashboardPage.dart';
 import 'Routes/Routes.dart';
+import 'package:fwa_news/Widgets/EditPostPage.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
         Routes.LOGIN: (context) => LoginPage(),
         Routes.DASHBOARD: (context) => DashboardPage(),
         Routes.FRAME: (context) => Frame(),
+        Routes.EDIT_POST: (context) => EditPostPage(),
       },
     );
   }

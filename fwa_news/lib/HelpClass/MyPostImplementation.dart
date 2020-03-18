@@ -5,6 +5,8 @@ import 'package:fwa_news/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:fwa_news/HelpClass/PostInterface.dart';
+import 'package:fwa_news/HelpClass/EditPageArguments.dart';
+import 'package:fwa_news/Routes/Routes.dart';
 
 class MyPostImplementation implements PostLoadInterface {
   Future<List<dynamic>> _loadData() async {
@@ -100,23 +102,31 @@ class _NewsCardState extends State<NewsCard> {
 
   @override
   Widget build(BuildContext context) {
-    return PostCardWrapper(
-      id: widget.id,
-      sourceId: widget.sourceId,
-      sourceName: widget.sourceName,
-      author: widget.author == "" ? "Anonym" : widget.author,
-      title: widget.title,
-      url: widget.url,
-      urlToImage: widget.urlToImage,
-      publishedAt: widget.publishedAt,
-      trailing: Container(
-          width: 25,
-          height: 55,
-          child: IconButton(
-              icon: Icon(Icons.delete), onPressed: (){
-                delete();
-                widget.callback();
-              })),
+    return GestureDetector(
+      child: PostCardWrapper(
+        id: widget.id,
+        sourceId: widget.sourceId,
+        sourceName: widget.sourceName,
+        author: widget.author == "" ? "Anonym" : widget.author,
+        title: widget.title,
+        url: widget.url,
+        urlToImage: widget.urlToImage,
+        publishedAt: widget.publishedAt,
+        trailing: Container(
+            width: 25,
+            height: 55,
+            child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  delete();
+                  widget.callback();
+                })),
+      ),
+      onLongPress: () {
+        Navigator.pushNamed(context, Routes.EDIT_POST,
+            arguments: EditPageArguments(widget.urlToImage, widget.title,
+                widget.url, widget.sourceName, widget.id));
+      },
     );
   }
 }

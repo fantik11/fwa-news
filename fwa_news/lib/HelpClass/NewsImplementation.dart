@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:fwa_news/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:fwa_news/Widgets/EditPostPage.dart';
 import 'package:fwa_news/HelpClass/PostInterface.dart';
 
 class NewsImplementation implements PostLoadInterface {
@@ -148,10 +147,7 @@ class _NewsCardState extends State<NewsCard> {
                     color: liked ? Colors.green : Colors.grey),
                 onPressed: () {
                   setState(() {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => EditPostPage()));
+                    
                     //Добавить +1 лайк и послать запрос
                     if (liked == false) {
                       widget.changeLike(widget.likes + 1);

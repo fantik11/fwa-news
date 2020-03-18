@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fwa_news/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
-import 'dart:developer';
+import 'package:sprintf/sprintf.dart';
+import 'package:fwa_news/HelpClass/EditPageArguments.dart';
 
 class EditPostPage extends StatefulWidget {
   String id, sourceName, title, url, urlToImage;
@@ -27,15 +28,17 @@ class _EditPostPageState extends State<EditPostPage> {
   TextEditingController titleController = new TextEditingController();
   TextEditingController urlController = new TextEditingController();
   TextEditingController sourceController = new TextEditingController();
+  String id;
 
   void onConfirm(BuildContext context) async {
-    Map<String, String> headers = {
+    if(id == "")
+    {
+      Map<String, String> headers = {
         "token": await SharedPreferencesHelper.getKeyValue("token"),
         "Content-Type": "application/json",
       };
 
       Map<String, String> body = {
-        "id":"",
         "sourceId": null,
         "sourceName": sourceController.text,
         "author": await SharedPreferencesHelper.getKeyValue("token"),
@@ -45,25 +48,55 @@ class _EditPostPageState extends State<EditPostPage> {
         "urlToImage": imgUrlController.text,
         "publishedAt": "2019-12-27T22:26:27Z"
       };
-
       http.Response response = await http.post(Url.NEW_POST,
           headers: headers, body: jsonEncode(body));
-      log(response.body);
-      //Navigator.pop(context);
+
+      Navigator.pop(context);
       return;
-      
+    }else
+    {
+      Map<String, String> headers = {
+        "token": await SharedPreferencesHelper.getKeyValue("token"),
+        "Content-Type": "application/json",
+      };
+
+      Map<String, String> body = {
+        "id":id,
+        "sourceId": null,
+        "sourceName": sourceController.text,
+        "author": await SharedPreferencesHelper.getKeyValue("token"),
+        "title": titleController.text,
+        "description": "",
+        "url": urlController.text,
+        "urlToImage": imgUrlController.text,
+        "publishedAt": "2019-12-27T22:26:27Z"
+      };
+      http.Response response = await http.put(sprintf(Url.PUT_POST, [id]),
+          headers: headers, body: jsonEncode(body));
+
+      Navigator.pop(context);
+      return;
+    }
   }
+  
 
   @override
   void initState() {
-    imgUrlController.text = widget.urlToImage;
-    titleController.text = widget.title;
-    urlController.text = widget.url;
-    sourceController.text = widget.sourceName;
+    super.initState();
+    new Future.delayed(Duration.zero,() {
+      EditPageArguments args = ModalRoute.of(context).settings.arguments;
+      imgUrlController.text = args.imageUrl;
+      titleController.text = args.title;
+      urlController.text = args.url;
+      sourceController.text = args.source;
+      id = args.id;
+    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
+    EditPageArguments args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -93,7 +126,7 @@ class _EditPostPageState extends State<EditPostPage> {
                   child: FadeInImage.assetNetwork(
                     fit: BoxFit.cover,
                     placeholder: "assets/images/image_placeholder.png",
-                    image: widget.url == null ? "" : widget.url,
+                    image: args.imageUrl,
                   ),
                 ),
                 Container(
@@ -102,8 +135,8 @@ class _EditPostPageState extends State<EditPostPage> {
                   child: TextField(
                     controller: imgUrlController,
                     onSubmitted: (value) {
-                      setState(() {
-                        widget.url = value;
+                      setState(() { 
+                        args.imageUrl = value;
                       });
                     },
                     decoration: new InputDecoration(
