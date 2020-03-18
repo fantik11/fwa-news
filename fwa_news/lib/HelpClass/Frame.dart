@@ -3,6 +3,7 @@ import 'package:fwa_news/DashboardPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fwa_news/Widgets/SettingsPage.dart';
 import 'package:fwa_news/Widgets/MyPostPage.dart';
+import 'package:fwa_news/Widgets/FindNewsPage.dart';
 
 class Frame extends StatefulWidget {
   Frame({Key key}) : super(key: key);
@@ -19,9 +20,13 @@ class _FrameState extends State<Frame> {
     keepPage: true,
   );
 
-  void pageChanged(index) {
+  void pageViewIndexChange(index)
+  {
     _selectedIndex = index;
     setState(() {});
+  }
+
+  void pageNavBarIndexChanged(index) {
     pageController.jumpToPage(index);
   }
 
@@ -35,13 +40,11 @@ class _FrameState extends State<Frame> {
             child: Container(
               child: PageView(
                 controller: pageController,
-                onPageChanged: (index) {
-                  pageChanged(index);
-                },
+                onPageChanged: pageViewIndexChange,
                 children: <Widget>[
                   DashboardPage(),
                   MyPostPage(),
-                  DashboardPage(),
+                  FindNewsPage(),
                   SettingsPage(),
                 ],
               ),
@@ -63,7 +66,7 @@ class _FrameState extends State<Frame> {
           Icon(Icons.search, size: 30),
           Icon(Icons.settings, size: 30),
         ],
-        onTap: pageChanged,
+        onTap: pageNavBarIndexChanged,
         index: _selectedIndex,
         height: 50,
       ),

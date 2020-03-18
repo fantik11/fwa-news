@@ -22,8 +22,6 @@ class _MyPostPageState extends State<MyPostPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
   void callback()

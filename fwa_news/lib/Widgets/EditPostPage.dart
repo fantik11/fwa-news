@@ -46,7 +46,7 @@ class _EditPostPageState extends State<EditPostPage> {
         "description": "",
         "url": urlController.text,
         "urlToImage": imgUrlController.text,
-        "publishedAt": "2019-12-27T22:26:27Z"
+        "publishedAt": DateTime.now().toString()
       };
       http.Response response = await http.post(Url.NEW_POST,
           headers: headers, body: jsonEncode(body));
@@ -69,7 +69,7 @@ class _EditPostPageState extends State<EditPostPage> {
         "description": "",
         "url": urlController.text,
         "urlToImage": imgUrlController.text,
-        "publishedAt": "2019-12-27T22:26:27Z"
+        "publishedAt": DateTime.now().toString()
       };
       http.Response response = await http.put(sprintf(Url.PUT_POST, [id]),
           headers: headers, body: jsonEncode(body));

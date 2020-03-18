@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostLoadInterface {
-  Future<List<dynamic>> _loadData() async {}
-  Future<Widget> postBuilder({int count = 10}) async{}
+  Future<List<dynamic>> get _loadData async {}
+  Future<Widget> postBuilder({int count = 20}) async {}
 }
 
 class PostCardWrapper extends StatefulWidget {
@@ -26,29 +27,35 @@ class PostCardWrapper extends StatefulWidget {
       this.url,
       this.urlToImage,
       this.publishedAt,
-      this.trailing
-      })
+      this.trailing})
       : super(key: key);
 
   @override
   _PostCardWrapperState createState() => _PostCardWrapperState();
 }
 
-class _PostCardWrapperState extends State<PostCardWrapper> {
+_launchURL(String url) async {
+  await launch(url);
+}
 
+class _PostCardWrapperState extends State<PostCardWrapper> {
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         leading: Container(
-          height: 80,
-          width: 100,
-          child: FadeInImage.assetNetwork(
-            fit: BoxFit.cover,
-            placeholder: "assets/images/image_placeholder.png",
-            image: widget.urlToImage,
-          ),
-        ),
+            height: 80,
+            width: 100,
+            child: GestureDetector(
+              child: FadeInImage.assetNetwork(
+                fit: BoxFit.cover,
+                placeholder: "assets/images/image_placeholder.png",
+                image: widget.urlToImage,
+              ),
+              onTap: () {
+                _launchURL(widget.url);
+              },
+            )),
         title: Text(
           widget.title,
           overflow: TextOverflow.ellipsis,

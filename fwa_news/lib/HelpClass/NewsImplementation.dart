@@ -22,7 +22,7 @@ class NewsImplementation implements PostLoadInterface {
   }
 
   //Главный билдер
-  Future<Widget> postBuilder({int count = 10}) async {
+  Future<Widget> postBuilder({int count = 20}) async {
     List<dynamic> data = await _loadData();
     List<Widget> posts = new List<Widget>();
 

@@ -24,7 +24,7 @@ class MyPostImplementation implements PostLoadInterface {
   }
 
   //Главный билдер
-  Future<Widget> postBuilder({int count = 10, Function fn}) async {
+  Future<Widget> postBuilder({int count = 20, Function fn}) async {
     List<dynamic> data = await _loadData();
     List<Widget> posts = new List<Widget>();
 
@@ -117,8 +117,8 @@ class _NewsCardState extends State<NewsCard> {
             height: 55,
             child: IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () {
-                  delete();
+                onPressed: () async{
+                  await delete();
                   widget.callback();
                 })),
       ),
