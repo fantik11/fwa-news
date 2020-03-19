@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:fwa_news/HelpClass/EditPageArguments.dart';
+import 'package:fwa_news/Core/EditPageArguments.dart';
 
 class EditPostPage extends StatefulWidget {
   String id, sourceName, title, url, urlToImage;
@@ -48,7 +48,7 @@ class _EditPostPageState extends State<EditPostPage> {
         "urlToImage": imgUrlController.text,
         "publishedAt": DateTime.now().toString()
       };
-      http.Response response = await http.post(Url.NEW_POST,
+      await http.post(Url.NEW_POST,
           headers: headers, body: jsonEncode(body));
 
       Navigator.pop(context);
@@ -71,7 +71,7 @@ class _EditPostPageState extends State<EditPostPage> {
         "urlToImage": imgUrlController.text,
         "publishedAt": DateTime.now().toString()
       };
-      http.Response response = await http.put(sprintf(Url.PUT_POST, [id]),
+      await http.put(sprintf(Url.PUT_POST, [id]),
           headers: headers, body: jsonEncode(body));
 
       Navigator.pop(context);

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/DashboardPage.dart';
-import "SplashPage.dart";
-import "LoginPage.dart";
-import 'HelpClass/Frame.dart';
-import 'DashboardPage.dart';
+import 'package:fwa_news/Widgets/DashboardPage.dart';
+import 'package:fwa_news/Widgets/SplashPage.dart';
+import "package:fwa_news/Widgets/LoginPage.dart";
+import 'package:fwa_news/Core/Frame.dart';
 import 'Routes/Routes.dart';
 import 'package:fwa_news/Widgets/EditPostPage.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'dart:async';
-import 'Routes/Routes.dart';
+import 'package:fwa_news/Routes/Routes.dart';
 
 
 class SplashPage extends StatefulWidget {
@@ -12,8 +12,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPage extends State<SplashPage> {
 
-  @protected
-  @mustCallSuper
+  @override
   void initState() {
     Timer(Duration(seconds: 3), () => _navigateToNextPage(context));
   }
