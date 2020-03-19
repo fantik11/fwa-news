@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:fwa_news/HelpClass/PostInterface.dart';
-import 'package:fwa_news/HelpClass/EditPageArguments.dart';
+import 'package:fwa_news/Core/PostInterface.dart';
+import 'package:fwa_news/Core/EditPageArguments.dart';
 import 'package:fwa_news/Routes/Routes.dart';
 
 class MyPostImplementation implements PostLoadInterface {

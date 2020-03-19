@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostLoadInterface {
-  Future<List<dynamic>> get _loadData async {}
+  Future<List<dynamic>> _loadData() async {}
   Future<Widget> postBuilder({int count = 20}) async {}
 }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/DashboardPage.dart';
+import 'package:fwa_news/Widgets/DashboardPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fwa_news/Widgets/SettingsPage.dart';
 import 'package:fwa_news/Widgets/MyPostPage.dart';

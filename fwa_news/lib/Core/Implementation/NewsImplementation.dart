@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'package:fwa_news/Routes/url.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:fwa_news/HelpClass/PostInterface.dart';
+import 'package:fwa_news/Core/PostInterface.dart';
 
 class NewsImplementation implements PostLoadInterface {
   Future<List<dynamic>> _loadData() async {
@@ -27,7 +27,7 @@ class NewsImplementation implements PostLoadInterface {
     List<Widget> posts = new List<Widget>();
 
     data.asMap().forEach((i, element) {
-      if (i  < count) {
+      if (i < count) {
         //posts.add(PostCard.fromJson(element));
         posts.add(NewsCard(
             id: element['id'],
@@ -128,48 +128,48 @@ class _NewsCardState extends State<NewsCard> {
   @override
   Widget build(BuildContext context) {
     return PostCardWrapper(
-        id: widget.id,
-        sourceId: widget.sourceId,
-        sourceName: widget.sourceName,
-        author: widget.author == "" ? "Anonym" : widget.author,
-        title: widget.title,
-        url: widget.url,
-        urlToImage: widget.urlToImage,
-        publishedAt: widget.publishedAt,
-        trailing: Column(
-          children: <Widget>[
-            Container(
-              width: 25,
-              height: 25,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(Icons.keyboard_arrow_up,
-                    color: liked ? Colors.green : Colors.grey),
-                onPressed: () {
-                  setState(() {
-                    
-                    //Добавить +1 лайк и послать запрос
-                    if (liked == false) {
-                      widget.changeLike(widget.likes + 1);
-                      liked = true;
-                      like();
-                    } else {
-                      widget.changeLike(widget.likes - 1);
-                      liked = false;
-                      unlike();
-                    }
-                  });
-                },
-              ),
+      id: widget.id,
+      sourceId: widget.sourceId,
+      sourceName: widget.sourceName,
+      author: widget.author == "" ? "Anonym" : widget.author,
+      title: widget.title,
+      url: widget.url,
+      urlToImage: widget.urlToImage,
+      publishedAt: widget.publishedAt,
+      trailing: Column(
+        children: <Widget>[
+          Container(
+            width: 25,
+            height: 25,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(Icons.keyboard_arrow_up,
+                  color: liked ? Colors.green : Colors.grey),
+              onPressed: () {
+                setState(() {
+                  //Добавить +1 лайк и послать запрос
+                  if (liked == false) {
+                    widget.changeLike(widget.likes + 1);
+                    liked = true;
+                    like();
+                  } else {
+                    widget.changeLike(widget.likes - 1);
+                    liked = false;
+                    unlike();
+                  }
+                });
+              },
             ),
-            Text(
-              widget.likes.toString(),
-              style: Theme.of(context)
-                  .textTheme
-                  .button
-                  .copyWith(color: liked ? Colors.green : Colors.grey),
-            ),
-          ],
-        ));
+          ),
+          Text(
+            widget.likes.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .button
+                .copyWith(color: liked ? Colors.green : Colors.grey),
+          ),
+        ],
+      ),
+    );
   }
 }

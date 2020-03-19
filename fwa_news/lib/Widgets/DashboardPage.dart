@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fwa_news/HelpClass/NewsImplementation.dart';
+import 'package:fwa_news/Core/Implementation/NewsImplementation.dart';
+import 'package:fwa_news/settings.dart';
 
 class DashboardPage extends StatefulWidget {
   DashboardPage({Key key}) : super(key: key);
@@ -20,8 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return;
   }
 
-  //TODO Нормально реализовать дефолтное значение
-  int _postCount = 10;
+  int _postCount = Settings.DEFAULT_POSTS_SHOW_NUMBER;
 
   @override
   void initState() {
@@ -35,8 +35,6 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,23 +43,24 @@ class _DashboardPageState extends State<DashboardPage> {
         title: Text("Dashboard"),
       ),
       body: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: _refresh,
-          child: FutureBuilder(
-            future: post.postBuilder(count: _postCount),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  child: snapshot.data,
-                );
-              } else {
-                return SpinKitHourGlass(
-                  color: Colors.lightBlue,
-                  size: 50.0,
-                );
-              }
-            },
-          )),
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: FutureBuilder(
+          future: post.postBuilder(count: _postCount),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Container(
+                child: snapshot.data,
+              );
+            } else {
+              return SpinKitHourGlass(
+                color: Colors.lightBlue,
+                size: 50.0,
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

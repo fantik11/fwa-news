@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fwa_news/HelpClass/MyPostImplementation.dart';
+import 'package:fwa_news/Core/Implementation/MyPostImplementation.dart';
 
 class MyPostPage extends StatefulWidget {
   MyPostPage({Key key}) : super(key: key);

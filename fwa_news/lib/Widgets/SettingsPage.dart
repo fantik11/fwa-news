@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/Helpers/preferences.dart';
 import 'package:fwa_news/Routes/Routes.dart';
 import 'package:fwa_news/Helpers/FlashHelper.dart';
 
