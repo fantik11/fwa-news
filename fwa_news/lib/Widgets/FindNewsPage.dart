@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/preferences.dart';
+import 'package:fwa_news/HelpClass/FindNewsImplementation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fwa_news/HelpClass/NewsImplementation.dart';
 
-class DashboardPage extends StatefulWidget {
-  DashboardPage({Key key}) : super(key: key);
+class FindNewsPage extends StatefulWidget {
+  FindNewsPage({Key key}) : super(key: key);
+
   @override
-  _DashboardPageState createState() => _DashboardPageState();
+  _FindNewsPageState createState() => _FindNewsPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
-  NewsImplementation post = new NewsImplementation();
+class _FindNewsPageState extends State<FindNewsPage> {
+  final FindNewsImplementation post = new FindNewsImplementation();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
@@ -20,17 +20,8 @@ class _DashboardPageState extends State<DashboardPage> {
     return;
   }
 
-  //TODO Нормально реализовать дефолтное значение
-  int _postCount = 10;
-
   @override
   void initState() {
-    //Получение кол-ва постов для отображения
-    SharedPreferencesHelper.getKeyValue("news_count").then((value) {
-      if (value != false) {
-        _postCount = int.parse(value);
-      }
-    });
 
     super.initState();
   }
@@ -42,19 +33,19 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).appBarTheme.color,
-        title: Text("Dashboard"),
+        title: Text("Find News"),
       ),
       body: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _refresh,
           child: FutureBuilder(
-            future: post.postBuilder(count: _postCount),
+            future: post.postBuilder(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Container(
                   child: snapshot.data,
                 );
-              } else {
+              }else {
                 return SpinKitHourGlass(
                   color: Colors.lightBlue,
                   size: 50.0,
