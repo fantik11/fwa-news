@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fwa_news/Widgets/DashboardPage.dart';
-import 'package:fwa_news/Widgets/SplashPage.dart';
-import "package:fwa_news/Widgets/LoginPage.dart";
-import 'package:fwa_news/Widgets/Frame.dart';
-import 'Routes/Routes.dart';
-import 'package:fwa_news/Widgets/EditPostPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,13 +20,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: SplashPage(),
-      routes: {
-        Routes.LOGIN: (context) => LoginPage(),
-        Routes.DASHBOARD: (context) => DashboardPage(),
-        Routes.FRAME: (context) => Frame(),
-        Routes.EDIT_POST: (context) => EditPostPage(),
-      },
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
